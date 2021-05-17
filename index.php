@@ -31,10 +31,10 @@ $f3->route('GET|POST /survey', function($f3){
         $userOptions = $_POST['options'];
 
         $_SESSION['name'] = $_POST['name'];
-        if(!empty($userOptions)){
-            $_SESSION['options'] = implode(", ",$userOptions);
-        }
 
+            $_SESSION['options'] = implode(", ",$userOptions);
+
+        header("location: summary");
     }
 
     $f3->set('options',getOptions());
@@ -42,6 +42,13 @@ $f3->route('GET|POST /survey', function($f3){
     //Display the home page
     $view = new Template();
     echo $view->render('views/survey.html');
+});
+
+$f3->route('GET /summary', function(){
+
+    //Display the home page
+    $view = new Template();
+    echo $view->render('views/summary.html');
 });
 
 $f3->run();
