@@ -11,6 +11,7 @@ error_reporting(E_ALL);
 
 //Require autoload file
 require_once ('vendor/autoload.php');
+require_once ('model/data-layer.php');
 
 //Instantiate Fat-Free
 $f3 = Base::instance();
@@ -23,14 +24,24 @@ $f3->route('GET /', function(){
     echo $view->render('views/home.html');
 });
 
-$f3->route('GET /survey', function(){
+$f3->route('GET|POST /survey', function($f3){
+    $userOptions = array();
 
     if($_SERVER['REQUEST_METHOD'] == 'POST'){
+        $userOptions = $_POST['options'];
+
+        $_SESSION['name'] = $_POST['name'];
+        if(!empty($userOptions)){
+            $_SESSION['options'] = implode(", ",$userOptions);
+        }
 
     }
+
+    $f3->set('options',getOptions());
+
     //Display the home page
     $view = new Template();
-    echo $view->render('views/home.html');
+    echo $view->render('views/survey.html');
 });
 
 $f3->run();
